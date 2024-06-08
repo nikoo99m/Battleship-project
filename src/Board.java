@@ -1,20 +1,26 @@
+import java.util.Arrays;
+
 public class Board {
-    private int length = 10;
+    private final int length;
     private char[][] board;
     public static final char WATER = '.';
 
-    public Board() {
+    public Board(int length){
+        this.length = length;
         board = initialBoard();
+    }
+    public Board(char[][] board){
+        this.length = board.length;
+        this.board = board;
     }
 
     private char[][] initialBoard() {
-        char[][] board = new char[length][length];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0 ; j < board[i].length; j++) {
-                board[i][j] = WATER;
-            }
-        }
-        return board;
+        return Arrays.stream(new char[length][length])
+                .map(row -> {
+                    Arrays.fill(row, WATER);
+                    return row;
+                })
+                .toArray(char[][]::new);
     }
 
     public void printBoard() {
