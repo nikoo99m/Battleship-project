@@ -8,14 +8,16 @@ public class Board {
     public static final char MISS = 'm';
     public static final char SHIP = 's';
 
-    public Board(int length){
+    public Board(int length) {
         this.length = length;
         board = initialBoard();
     }
-    public Board(char[][] board){
+
+    public Board(char[][] board) {
         this.length = board.length;
         this.board = board;
     }
+
     public int getLength() {
         return length;
     }
@@ -37,6 +39,7 @@ public class Board {
             System.out.println();
         }
     }
+
     public char getCellStatus(Location location) {
         int row = location.getRow();
         int column = location.getColumn();
@@ -72,6 +75,16 @@ public class Board {
         return isStatusAtPosition(location, HIT);
     }
 
+    private boolean hasSpace(Ship ship) {
+        int shipLength = ship.getSize();
+        int startRow = ship.getLocation().getRow();
+        int startColumn = ship.getLocation().getColumn();
+        int endRow = startRow + (ship.getDirection() == Direction.VERTICAL ? shipLength - 1 : 0);
+        int endColumn = startColumn + (ship.getDirection() == Direction.HORIZONTAL ? shipLength - 1 : 0);
+
+        return endRow < length && endColumn < length;
+    }
+
     private boolean isValidPosition(int row, int column) {
         return row >= 0 && row < board.length && column >= 0 && column < board[0].length;
     }
@@ -79,5 +92,6 @@ public class Board {
     private boolean isStatusAtPosition(Location location, char status) {
         return getCellStatus(location) == status;
     }
+
 
 }
