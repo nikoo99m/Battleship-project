@@ -7,6 +7,7 @@ public class Board {
     public static final char HIT = 'h';
     public static final char MISS = 'm';
     public static final char SHIP = 's';
+    private int numShips = 0;
 
     public Board(int length) {
         this.length = length;
@@ -92,6 +93,40 @@ public class Board {
     private boolean isStatusAtPosition(Location location, char status) {
         return getCellStatus(location) == status;
     }
+    public boolean addShip(Ship ship) {
+        Location location = ship.getLocation();
+        int row = location.getRow();
+        int column = location.getColumn();
 
+        if (!validateShipLocation(ship, location)) {
+            return false;
+        }
+        placeShipOnBoard(ship, row, column);
+        return true;
+    }
 
+    private boolean validateShipLocation(Ship ship, Location location) {
+        if (hasShip(location)) {
+            System.out.println("Error, there is already a ship at that position");
+            return false;
+        }
+
+        if (!hasSpace(ship)) {
+            System.out.println("Error, there is not enough space for that ship in that direction");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void placeShipOnBoard(Ship ship, int row, int column) {
+        for (int i = 0; i < ship.getSize(); i++) {
+            if (ship.getDirection() == Direction.HORIZONTAL) {
+                board[row][column + i] = SHIP;
+            } else if (ship.getDirection() == Direction.VERTICAL) {
+                board[row + i][column] = SHIP;
+            }
+        }
+        numShips++;
+    }
 }
