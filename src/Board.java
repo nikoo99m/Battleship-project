@@ -129,4 +129,27 @@ public class Board {
         }
         numShips++;
     }
+    public boolean addHit(Location location) {
+        int x = location.getRow();
+        int y = location.getColumn();
+        char current = board[x][y];
+
+        if (current == HIT || current == MISS) {
+            return false;
+        }
+
+        if (current == SHIP) {
+            numShips--;
+
+            return updateCellStatus(HIT, location);
+        }
+
+        if (current == WATER) {
+
+            return updateCellStatus(MISS, location);
+        }
+
+        return false;
+    }
 }
+
