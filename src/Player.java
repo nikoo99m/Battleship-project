@@ -16,13 +16,24 @@ public class Player {
 
                 System.out.println("Placing " + ship.getName() + " of size " + ship.getSize());
 
-
-                System.out.print("Enter starting point like A1 : ");
-                String startingPoint = scanner.nextLine();
-
+                System.out.println("Enter starting row");
+                int row = scanner.nextInt();
+                System.out.println("Enter starting column");
+                int column = scanner.nextInt();
                 System.out.print("Enter direction (0 for HORIZONTAL, 1 for VERTICAL): ");
                 int directionValue = scanner.nextInt();
                 Direction direction = (directionValue == 0) ? Direction.HORIZONTAL : Direction.VERTICAL;
+
+                ship.setLocation(new Location(column, row));
+                ship.setDirection(direction);
+
+                if (board.addShip(ship)) {
+                    placed = true;
+                    System.out.println(ship.getName() + " placed successfully.");
+                    board.printBoard();
+                } else {
+                    System.out.println("Cannot place ship at specified location. Please try again.");
+                }
             }
         }
     }
