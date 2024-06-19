@@ -2,7 +2,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Player {
-    private final Board board = new Board(10);
+    private Board board = new Board(10);
+
+    Player(Board board) {
+        this.board = board;
+    }
 
 
     public void placeAllShips() {
@@ -33,8 +37,28 @@ public class Player {
                     board.printBoard();
                 } else {
                     System.out.println("Cannot place ship at specified location. Please try again.");
+
                 }
             }
         }
     }
+
+    public Location shoot(Board enemyBoard) {
+        System.out.println("Enter the row of the point for shoothing");
+        Scanner scanner = new Scanner(System.in);
+        int row = scanner.nextInt();
+        System.out.println("Enter the column of the point for shoothing");
+        Scanner sc = new Scanner(System.in);
+        int column = sc.nextInt();
+        Location firedLocation = new Location(column, row);
+
+        if (enemyBoard.addHit(firedLocation)) {
+            enemyBoard.printBoard();
+            if (enemyBoard.hasHit(firedLocation)) {
+                shoot(enemyBoard);
+            }
+        }
+        return firedLocation;
+    }
 }
+
