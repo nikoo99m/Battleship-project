@@ -1,20 +1,14 @@
-import java.util.Arrays;
-
 public class Board {
     private final int length;
-    private final char[][] board;
-    public static final char WATER = '.';
-    public static final char HIT = 'h';
-    public static final char MISS = 'm';
-    public static final char SHIP = 's';
+    private final Cell[][] board;
     private int numShips = 0;
 
     public Board(int length) {
         this.length = length;
-        board = initialBoard();
+        this.board = initialBoard();
     }
 
-    public Board(char[][] board) {
+    public Board(Cell[][] board) {
         this.length = board.length;
         this.board = board;
     }
@@ -23,19 +17,20 @@ public class Board {
         return length;
     }
 
-    private char[][] initialBoard() {
-        return Arrays.stream(new char[length][length])
-                .map(row -> {
-                    Arrays.fill(row, WATER);
-                    return row;
-                })
-                .toArray(char[][]::new);
+    private Cell[][] initialBoard() {
+        Cell[][] newBoard = new Cell[length][length];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                newBoard[i][j] = new Cell();
+            }
+        }
+        return newBoard;
     }
 
     public void printBoard() {
-        for (char[] row : board) {
-            for (char cell : row) {
-                System.out.print(cell + " ");
+        for (Cell[] row : board) {
+            for (Cell cell : row) {
+                System.out.print(cell.getStatus() + " ");
             }
             System.out.println();
         }
@@ -45,7 +40,7 @@ public class Board {
         int row = location.getRow();
         int column = location.getColumn();
         if (isValidPosition(row, column)) {
-            return board[row][column];
+            return board[row][column].getStatus();
         }
         throw new IllegalArgumentException("Invalid location");
     }
@@ -54,26 +49,26 @@ public class Board {
         int row = location.getRow();
         int column = location.getColumn();
         if (isValidPosition(row, column)) {
-            board[row][column] = status;
+            board[row][column].setStatus(status);
             return true;
         }
         return false;
     }
 
     public boolean hasShip(Location location) {
-        return isStatusAtPosition(location, SHIP);
+        return isStatusAtPosition(location, Cell.SHIP);
     }
 
     public boolean hasWater(Location location) {
-        return isStatusAtPosition(location, WATER);
+        return isStatusAtPosition(location, Cell.WATER);
     }
 
     public boolean hasMiss(Location location) {
-        return isStatusAtPosition(location, MISS);
+        return isStatusAtPosition(location, Cell.MISS);
     }
 
     public boolean hasHit(Location location) {
-        return isStatusAtPosition(location, HIT);
+        return isStatusAtPosition(location, Cell.HIT);
     }
 
     private boolean hasSpace(Ship ship) {
@@ -93,6 +88,7 @@ public class Board {
     private boolean isStatusAtPosition(Location location, char status) {
         return getCellStatus(location) == status;
     }
+
     public boolean addShip(Ship ship) {
         Location location = ship.getLocation();
         int row = location.getRow();
@@ -122,34 +118,33 @@ public class Board {
     private void placeShipOnBoard(Ship ship, int row, int column) {
         for (int i = 0; i < ship.getSize(); i++) {
             if (ship.getDirection() == Direction.HORIZONTAL) {
-                board[row][column + i] = SHIP;
+                board[row][column + i].setStatus(Cell.SHIP);
             } else if (ship.getDirection() == Direction.VERTICAL) {
-                board[row + i][column] = SHIP;
+                board[row + i][column].setStatus(Cell.SHIP);
             }
         }
         numShips++;
     }
+
     public boolean addHit(Location location) {
         int x = location.getRow();
         int y = location.getColumn();
-        char current = board[x][y];
-
-        if (current == HIT || current == MISS) {
+        char current = board[x][y].getStatus();
+        if (current == Cell.HIT || current == Cell.MISS) {
             return false;
         }
 
-        if (current == SHIP) {
+        if (current == Cell.SHIP) {
             numShips--;
 
-            return updateCellStatus(HIT, location);
+            return updateCellStatus(Cell.HIT, location);
         }
 
-        if (current == WATER) {
+        if (current == Cell.WATER) {
 
-            return updateCellStatus(MISS, location);
+            return updateCellStatus(Cell.MISS, location);
         }
 
         return false;
     }
 }
-
