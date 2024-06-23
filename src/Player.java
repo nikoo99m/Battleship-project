@@ -14,21 +14,20 @@ public class Player {
         List<Ship> defaultShips = defaultShip.initializeDefaultShip();
 
         Scanner scanner = new Scanner(System.in);
+
         for (Ship ship : defaultShips) {
             boolean placed = false;
             while (!placed) {
 
                 System.out.println("Placing " + ship.getName() + " of size " + ship.getSize());
 
-                System.out.println("Enter starting row");
-                int row = scanner.nextInt();
-                System.out.println("Enter starting column");
-                int column = scanner.nextInt();
-                System.out.print("Enter direction (0 for HORIZONTAL, 1 for VERTICAL): ");
-                int directionValue = scanner.nextInt();
-                Direction direction = (directionValue == 0) ? Direction.HORIZONTAL : Direction.VERTICAL;
+                String getRow = "Enter starting row";
+                String getColumn = "Enter starting column";
+                Location location = InputCheck.checkLocationInput(scanner, board, getRow, getColumn);
+                String getDirection = "Enter direction (0 for HORIZONTAL, 1 for VERTICAL): ";
+                Direction direction = InputCheck.checkDirectipnInput(scanner, getDirection);
 
-                ship.setLocation(new Location(column, row));
+                ship.setLocation(location);
                 ship.setDirection(direction);
 
                 if (board.addShip(ship)) {
