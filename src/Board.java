@@ -115,16 +115,37 @@ public class Board {
         return true;
     }
 
-    private void placeShipOnBoard(Ship ship, int row, int column) {
+    private boolean canPlaceShip(Ship ship, int row, int column) {
         for (int i = 0; i < ship.getSize(); i++) {
             if (ship.getDirection() == Direction.HORIZONTAL) {
-                board[row][column + i].setStatus(Cell.SHIP);
+                if (column + i >= board[0].length || board[row][column + i].getStatus() != Cell.WATER) {
+                    return false;
+                }
             } else if (ship.getDirection() == Direction.VERTICAL) {
-                board[row + i][column].setStatus(Cell.SHIP);
+                if (row + i >= board.length || board[row + i][column].getStatus() != Cell.WATER) {
+                    return false;
+                }
             }
         }
-        numShips++;
+        return true;
     }
+
+    private void placeShipOnBoard(Ship ship, int row, int column) {
+        if (canPlaceShip(ship, row, column)) {
+            for (int i = 0; i < ship.getSize(); i++) {
+                if (ship.getDirection() == Direction.HORIZONTAL) {
+                    board[row][column + i].setStatus(Cell.SHIP);
+                } else if (ship.getDirection() == Direction.VERTICAL) {
+                    board[row + i][column].setStatus(Cell.SHIP);
+                }
+            }
+            numShips++;
+        } else {
+            // Handle the case where the ship cannot be placed
+            System.out.println("Cannot place ship at the given location. Try a different location.");
+        }
+    }
+
 
     public boolean addHit(Location location) {
         int x = location.getRow();
