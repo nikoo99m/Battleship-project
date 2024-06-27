@@ -130,7 +130,7 @@ public class Board {
         return true;
     }
 
-    private void placeShipOnBoard(Ship ship, int row, int column) {
+    public void placeShipOnBoard(Ship ship, int row, int column) {
         if (canPlaceShip(ship, row, column)) {
             for (int i = 0; i < ship.getSize(); i++) {
                 if (ship.getDirection() == Direction.HORIZONTAL) {
