@@ -168,4 +168,26 @@ public class Board {
 
         return false;
     }
+
+    public boolean isShipSunk(Ship ship) {
+        Location location = ship.getLocation();
+        Direction direction = ship.getDirection();
+        int row = location.getRow();
+        int column = location.getColumn();
+        if (direction == Direction.HORIZONTAL) {
+            for (int i = 0; i < ship.getSize(); i++) {
+                if (board[row][column + i].getStatus() != Cell.HIT) {
+                    return false;
+                }
+            }
+        } else if (direction == Direction.VERTICAL) {
+            for (int i = 0; i < ship.getSize(); i++) {
+                if (board[row + i][column].getStatus() != Cell.HIT) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
+
