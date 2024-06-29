@@ -30,9 +30,32 @@ public class Board {
     public void printBoard() {
         for (Cell[] row : board) {
             for (Cell cell : row) {
-                System.out.print(cell.getStatus() + " ");
+                char status = cell.getStatus();
+                String colorCode = "";
+
+
+
+                switch (status) {
+                    case Cell.SHIP:
+                        colorCode = cell.colourCode;
+                        break;
+                    case Cell.WATER:
+                        colorCode = "\u001B[36m"; // Cyan color for water
+                        break;
+                    case Cell.MISS:
+                        colorCode = "\u001B[37m"; // White color for misses
+                        break;
+                    case Cell.HIT:
+                        colorCode = "\u001B[31m"; // Red color for hits
+                        break;
+                    default:
+                        colorCode = "\u001B[0m"; // Reset color
+                        break;
+                }
+
+                System.out.print(colorCode + status + " ");
             }
-            System.out.println();
+            System.out.println("\u001B[0m"); // Reset color at the end of each row
         }
     }
 
@@ -135,8 +158,10 @@ public class Board {
             for (int i = 0; i < ship.getSize(); i++) {
                 if (ship.getDirection() == Direction.HORIZONTAL) {
                     board[row][column + i].setStatus(Cell.SHIP);
+                    board[row][column + i].colourCode = ship.getColour();
                 } else if (ship.getDirection() == Direction.VERTICAL) {
                     board[row + i][column].setStatus(Cell.SHIP);
+                    board[row][column + i].colourCode = ship.getColour();
                 }
             }
             numShips++;

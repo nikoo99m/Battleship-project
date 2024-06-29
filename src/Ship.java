@@ -1,9 +1,12 @@
+import java.util.Objects;
+
 public class Ship {
 
     private final String name;
     private final int size;
     private Direction direction;
     private Location location;
+    protected String shipColour;
 
     public Ship(String name, int size) {
         this.name = name;
@@ -30,5 +33,9 @@ public class Ship {
     }
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public String getColour(){
+        return shipColour;
     }
 }
