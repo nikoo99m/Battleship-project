@@ -4,5 +4,7 @@ public class Destroyer extends Ship {
 
     public Destroyer(String name, int size) {
         super(name, size);
+        shipColour = "\u001B[35m";
     }
+
 }
