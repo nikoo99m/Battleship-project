@@ -161,7 +161,7 @@ public class Board {
                     board[row][column + i].colourCode = ship.getColour();
                 } else if (ship.getDirection() == Direction.VERTICAL) {
                     board[row + i][column].setStatus(Cell.SHIP);
-                    board[row][column + i].colourCode = ship.getColour();
+                    board[row + i][column].colourCode = ship.getColour();
                 }
             }
             numShips++;
