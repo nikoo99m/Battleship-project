@@ -13,6 +13,7 @@ public class Board {
         this.board = board;
     }
 
+
     public int getLength() {
         return length;
     }
@@ -31,27 +32,13 @@ public class Board {
         for (Cell[] row : board) {
             for (Cell cell : row) {
                 char status = cell.getStatus();
-                String colorCode = "";
-
-
-
-                switch (status) {
-                    case Cell.SHIP:
-                        colorCode = cell.colourCode;
-                        break;
-                    case Cell.WATER:
-                        colorCode = "\u001B[36m"; // Cyan color for water
-                        break;
-                    case Cell.MISS:
-                        colorCode = "\u001B[37m"; // White color for misses
-                        break;
-                    case Cell.HIT:
-                        colorCode = "\u001B[31m"; // Red color for hits
-                        break;
-                    default:
-                        colorCode = "\u001B[0m"; // Reset color
-                        break;
-                }
+                String colorCode = switch (status) {
+                    case Cell.SHIP -> cell.colourCode;
+                    case Cell.WATER -> "\u001B[34m";
+                    case Cell.MISS -> "\u001B[37m";
+                    case Cell.HIT -> "\u001B[31m";
+                    default -> "\u001B[0m";
+                };
 
                 System.out.print(colorCode + status + " ");
             }
