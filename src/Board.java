@@ -201,5 +201,31 @@ public class Board {
         }
         return true;
     }
+    public void printBoardForEnemy() {
+        for (Cell[] row : board) {
+            for (Cell cell : row) {
+                char status = cell.getStatus();
+                char displayStatus;
+                String colorCode;
+
+                if (status == Cell.SHIP) {
+                    displayStatus = Cell.WATER;
+                    colorCode = "\u001B[34m";
+                } else {
+                    displayStatus = status;
+                    colorCode = switch (status) {
+                        case Cell.WATER -> "\u001B[34m";
+                        case Cell.MISS -> "\u001B[37m";
+                        case Cell.HIT -> "\u001B[31m";
+                        default -> "\u001B[0m";
+                    };
+                }
+
+                System.out.print(colorCode + displayStatus + " ");
+            }
+            System.out.println("\u001B[0m");
+        }
+    }
+
 }
 
