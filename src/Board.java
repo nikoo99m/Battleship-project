@@ -170,12 +170,12 @@ public class Board {
         if (current == Cell.SHIP) {
             numShips--;
 
-            return updateCellStatus(Cell.HIT, location);
+            return true;
         }
 
-        if (current == Cell.WATER) {
-
-            return updateCellStatus(Cell.MISS, location);
+        if (Objects.equals(current, Cell.WATER)) {
+            updateCellStatus(Cell.MISS, location);
+            return false;
         }
 
         return false;
