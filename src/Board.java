@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Board {
     private final int length;
     private final Cell[][] board;
@@ -112,16 +114,36 @@ public class Board {
     }
 
     private boolean validateShipLocation(Ship ship, Location location) {
-        if (hasShip(location)) {
-            System.out.println("Error, there is already a ship at that position");
-            return false;
-        }
 
         if (!hasSpace(ship)) {
             System.out.println("Error, there is not enough space for that ship in that direction");
             return false;
         }
 
+        if (!isShipNear(ship)) {
+            System.out.println("Error, there is a ship near");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isShipNear(Ship ship) {
+        int startRow = ship.getLocation().getRow();
+        int startColumn = ship.getLocation().getColumn();
+        int shipLength = ship.getSize();
+        int endRow = startRow + (ship.getDirection() == Direction.VERTICAL ? shipLength - 1 : 0);
+        int endColumn = startColumn + (ship.getDirection() == Direction.HORIZONTAL ? shipLength - 1 : 0);
+
+        for (int row = startRow - 1; row <= endRow + 1; row++) {
+            for (int column = startColumn - 1; column <= endColumn + 1; column++) {
+                if (isValidPosition(row, column)) {
+                    if (board[row][column].getStatus().equals(Cell.SHIP)) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -153,11 +175,10 @@ public class Board {
             }
             numShips++;
         } else {
-            // Handle the case where the ship cannot be placed
+
             System.out.println("Cannot place ship at the given location. Try a different location.");
         }
     }
-
 
     public boolean addHit(Location location) {
         int x = location.getRow();
