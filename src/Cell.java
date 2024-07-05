@@ -1,22 +1,28 @@
 public class Cell {
-    private char status;
+    private String status;
 
-    public static final char WATER = '.';
-    public static final char HIT = 'h';
-    public static final char MISS = 'm';
-    public static final char SHIP = 's';
+    public static final String WATER = "~";//"\uD83C\uDF0A";//(char) 176 ;
+    public static final String HIT = "●";
+    public static final String MISS = "■";
+    private String shipShape;
+    public static final String SHIP = "⛴";//(char) 154;
+
+    public static final String SUNK = "\uD83D\uDFB3";
     public String colourCode;
+    private Ship ship;
 
     public Cell() {
         this.status = WATER;
     }
+    public Ship getShip() {
+        return ship;
+    }
 
-
-    public char getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(char status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

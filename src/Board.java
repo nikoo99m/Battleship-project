@@ -48,7 +48,7 @@ public class Board {
         }
     }
 
-    public char getCellStatus(Location location) {
+    public String getCellStatus(Location location) {
         int row = location.getRow();
         int column = location.getColumn();
         if (isValidPosition(row, column)) {
@@ -57,7 +57,7 @@ public class Board {
         throw new IllegalArgumentException("Invalid location");
     }
 
-    public boolean updateCellStatus(char status, Location location) {
+    public boolean updateCellStatus(String status, Location location) {
         int row = location.getRow();
         int column = location.getColumn();
         if (isValidPosition(row, column)) {
@@ -97,8 +97,8 @@ public class Board {
         return row >= 0 && row < board.length && column >= 0 && column < board[0].length;
     }
 
-    private boolean isStatusAtPosition(Location location, char status) {
-        return getCellStatus(location) == status;
+    private boolean isStatusAtPosition(Location location, String status) {
+        return Objects.equals(getCellStatus(location), status);
     }
 
     public boolean addShip(Ship ship) {
@@ -183,18 +183,13 @@ public class Board {
     public boolean addHit(Location location) {
         int x = location.getRow();
         int y = location.getColumn();
-        char current = board[x][y].getStatus();
-        if (current == Cell.HIT || current == Cell.MISS) {
+        String current = board[x][y].getStatus();
+
+        if (current.equals(Cell.HIT) || current.equals(Cell.MISS)) {
             return false;
         }
 
-        if (current == Cell.SHIP) {
-            numShips--;
-
-            return true;
-        }
-
-        if (Objects.equals(current, Cell.WATER)) {
+        if (current.equals(Cell.WATER)) {
             updateCellStatus(Cell.MISS, location);
             return false;
         }
@@ -225,11 +220,11 @@ public class Board {
     public void printBoardForEnemy() {
         for (Cell[] row : board) {
             for (Cell cell : row) {
-                char status = cell.getStatus();
-                char displayStatus;
+                String status = cell.getStatus();
+                String displayStatus;
                 String colorCode;
 
-                if (status == Cell.SHIP) {
+                if (Objects.equals(status, Cell.SHIP)) {
                     displayStatus = Cell.WATER;
                     colorCode = "\u001B[34m";
                 } else {
@@ -242,7 +237,7 @@ public class Board {
                     };
                 }
 
-                System.out.print(colorCode + displayStatus + " ");
+                System.out.print(colorCode + String.format("%-5s", displayStatus) + " ");
             }
             System.out.println("\u001B[0m");
         }
