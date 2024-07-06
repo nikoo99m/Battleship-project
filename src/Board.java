@@ -201,22 +201,51 @@ public class Board {
         Location location = ship.getLocation();
         Direction direction = ship.getDirection();
         int row = location.getRow();
-        int column = location.getColumn();
-        if (direction == Direction.HORIZONTAL) {
-            for (int i = 0; i < ship.getSize(); i++) {
-                if (board[row][column + i].getStatus() != Cell.HIT) {
-                    return false;
-                }
+        int col = location.getColumn();
+
+        for (int c = col; c >= 0; c--) {
+            String status = board[row][c].getStatus();
+            if (status.equals(Cell.WATER)) {
+                break;
             }
-        } else if (direction == Direction.VERTICAL) {
-            for (int i = 0; i < ship.getSize(); i++) {
-                if (board[row + i][column].getStatus() != Cell.HIT) {
-                    return false;
-                }
+            if (status.equals(Cell.SHIP)) {
+                return false;
             }
         }
+
+        for (int c = col; c < board[0].length; c++) {
+            String status = board[row][c].getStatus();
+            if (status.equals(Cell.WATER)) {
+                break;
+            }
+            if (status.equals(Cell.SHIP)) {
+                return false;
+            }
+        }
+
+        for (int r = row; r >= 0; r--) {
+            String status = board[r][col].getStatus();
+            if (status.equals(Cell.WATER)) {
+                break;
+            }
+            if (status.equals(Cell.SHIP)) {
+                return false;
+            }
+        }
+
+        for (int r = row; r < board.length; r++) {
+            String status = board[r][col].getStatus();
+            if (status.equals(Cell.WATER)) {
+                break;
+            }
+            if (status.equals(Cell.SHIP)) {
+                return false;
+            }
+        }
+
         return true;
     }
+
     public void printBoardForEnemy() {
         for (Cell[] row : board) {
             for (Cell cell : row) {
@@ -231,8 +260,9 @@ public class Board {
                     displayStatus = status;
                     colorCode = switch (status) {
                         case Cell.WATER -> "\u001B[34m";
-                        case Cell.MISS -> "\u001B[37m";
+                        case Cell.MISS -> "\u001B[30m";
                         case Cell.HIT -> "\u001B[31m";
+                        case Cell.SUNK -> "\u001B[37m";
                         default -> "\u001B[0m";
                     };
                 }
