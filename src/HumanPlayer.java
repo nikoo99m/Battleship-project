@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player {
 
     HumanPlayer(Board board) {
         super(board);
@@ -42,21 +42,27 @@ public class HumanPlayer extends Player{
     }
 
     public void shoot(Board enemyBoard) {
-        System.out.println("Enter the row of the point for shoothing");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the row of the point for shooting");
         int row = scanner.nextInt();
-        System.out.println("Enter the column of the point for shoothing");
-        Scanner sc = new Scanner(System.in);
-        int column = sc.nextInt();
+        System.out.println("Enter the column of the point for shooting");
+        int column = scanner.nextInt();
         Location firedLocation = new Location(column, row);
+        setLastShot(firedLocation);
 
         if (enemyBoard.addHit(firedLocation)) {
-            enemyBoard.printBoard();
-            if (enemyBoard.hasHit(firedLocation)) {
-                shoot(enemyBoard);
-            }
+            System.out.println("It's a Hit!");
+            enemyBoard.printBoardForEnemy();
+        } else {
+            System.out.println("It's a Miss! Next player's turn.");
+            enemyBoard.printBoardForEnemy();
         }
+    }
 
+    public Board getBoard() {
+        return board;
     }
 }
+
+
 
