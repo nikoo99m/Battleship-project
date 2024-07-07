@@ -194,6 +194,18 @@ public class Board {
             return false;
         }
 
+        if (current.equals(Cell.SHIP)) {
+            updateCellStatus(Cell.HIT, location);
+
+            if (isShipSunk(location)) {
+                System.out.println("Ship sunk!");
+
+                markSunkShip(location);
+                return true;
+            }
+            return true;
+        }
+
         return false;
     }
 
