@@ -197,9 +197,41 @@ public class Board {
         return false;
     }
 
-    public boolean isShipSunk(Ship ship) {
-        Location location = ship.getLocation();
-        Direction direction = ship.getDirection();
+    private void markSunkShip(Location location) {
+        int row = location.getRow();
+        int col = location.getColumn();
+
+        for (int c = col; c >= 0; c--) {
+            if (board[row][c].getStatus().equals(Cell.WATER)) {
+                break;
+            }
+            board[row][c].setStatus(Cell.SUNK);
+        }
+
+        for (int c = col; c < board[0].length; c++) {
+            if (board[row][c].getStatus().equals(Cell.WATER)) {
+                break;
+            }
+            board[row][c].setStatus(Cell.SUNK);
+        }
+
+        for (int r = row; r >= 0; r--) {
+            if (board[r][col].getStatus().equals(Cell.WATER)) {
+                break;
+            }
+            board[r][col].setStatus(Cell.SUNK);
+        }
+
+
+        for (int r = row; r < board.length; r++) {
+            if (board[r][col].getStatus().equals(Cell.WATER)) {
+                break;
+            }
+            board[r][col].setStatus(Cell.SUNK);
+        }
+    }
+
+    public boolean isShipSunk(Location location) {
         int row = location.getRow();
         int col = location.getColumn();
 
