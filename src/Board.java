@@ -289,6 +289,16 @@ public class Board {
 
         return true;
     }
+    public boolean areAllShipsSunk() {
+        for (Cell[] row : board) {
+            for (Cell cell : row) {
+                if (Objects.equals(cell.getStatus(), Cell.SHIP)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public void printBoardForEnemy() {
         for (Cell[] row : board) {
