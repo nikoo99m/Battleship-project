@@ -214,21 +214,21 @@ public class Board {
         int col = location.getColumn();
 
         for (int c = col; c >= 0; c--) {
-            if (board[row][c].getStatus().equals(Cell.WATER)) {
+            if (board[row][c].getStatus().equals(Cell.WATER) || (board[row][c].getStatus().equals(Cell.MISS))) {
                 break;
             }
             board[row][c].setStatus(Cell.SUNK);
         }
 
         for (int c = col; c < board[0].length; c++) {
-            if (board[row][c].getStatus().equals(Cell.WATER)) {
+            if (board[row][c].getStatus().equals(Cell.WATER) || (board[row][c].getStatus().equals(Cell.MISS))) {
                 break;
             }
             board[row][c].setStatus(Cell.SUNK);
         }
 
         for (int r = row; r >= 0; r--) {
-            if (board[r][col].getStatus().equals(Cell.WATER)) {
+            if (board[r][col].getStatus().equals(Cell.WATER) || (board[r][col].getStatus().equals(Cell.MISS))) {
                 break;
             }
             board[r][col].setStatus(Cell.SUNK);
@@ -236,7 +236,7 @@ public class Board {
 
 
         for (int r = row; r < board.length; r++) {
-            if (board[r][col].getStatus().equals(Cell.WATER)) {
+            if (board[r][col].getStatus().equals(Cell.WATER) || (board[r][col].getStatus().equals(Cell.MISS))) {
                 break;
             }
             board[r][col].setStatus(Cell.SUNK);
