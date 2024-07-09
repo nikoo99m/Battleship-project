@@ -22,8 +22,37 @@ import java.util.Objects;
 
                 Location lastShot = player.getLastShot();
                 hit = enemy.getBoard().hasHit(lastShot) ;
-            } while (hit);
+            } while (hit && !checkGameOver());
         }
 
+        public void playGame() {
+            boolean gameOver = false;
+            Player currentPlayer = player1;
+            Player enemyPlayer = player2;
+
+            while (!gameOver) {
+                turn(currentPlayer, enemyPlayer);
+
+
+                gameOver = checkGameOver();
+
+                if (!gameOver) {
+                    if (currentPlayer == player1) {
+                        currentPlayer = player2;
+                        enemyPlayer = player1;
+                    } else {
+                        currentPlayer = player1;
+                        enemyPlayer = player2;
+                    }
+                }
+            }
+            System.out.println("Game over!");
+            System.out.println((currentPlayer == player1 ? "Player 1" : "Player 2") + " wins!");
+        }
+
+        private boolean checkGameOver() {
+
+            return player1.getBoard().areAllShipsSunk() || player2.getBoard().areAllShipsSunk();
+        }
     }
 
