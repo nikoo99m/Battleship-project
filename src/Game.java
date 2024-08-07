@@ -52,7 +52,30 @@ import java.util.Objects;
 
         private boolean checkGameOver() {
 
-            return player1.getBoard().areAllShipsSunk() || player2.getBoard().areAllShipsSunk();
-        }
+        return player1.getBoard().areAllShipsSunk() || player2.getBoard().areAllShipsSunk();
     }
+
+    public void setDifficulty() {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String input = "";
+
+        System.out.println("╔═══════════════╗  ╔════════════════════╗  ╔════════════════╗");
+        System.out.println("║     1. Easy   ║  ║  2. Intermediate   ║  ║  3. Difficult  ║");
+        System.out.println("╚═══════════════╝  ╚════════════════════╝  ╚════════════════╝");
+        System.out.println();
+
+        do {
+            System.out.print("Select your difficulty (1-3): ");
+            try {
+                input = in.readLine();
+            } catch (java.io.IOException e) {
+                System.out.println("An error has occurred: " + e.getMessage());
+            }
+        } while (!Pattern.matches("[123]", input));
+
+        this.difficulty = Integer.valueOf(input);
+        System.out.println("You have selected difficulty: " + this.difficulty);
+    }
+
+}
 
