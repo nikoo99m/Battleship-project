@@ -1,56 +1,68 @@
-import java.util.Objects;
-    public class Game {
-        private final Player player1;
-        private final Player player2;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.regex.Pattern;
+
+public class Game {
+    private final Player player1;
+    private final Player player2;
+    int difficulty;
 
         public Game() {
             player1 = new HumanPlayer(new Board(10));
             player2 = new HumanPlayer(new Board(10));
         }
 
-        public void startOfTheGame() {
-            player1.placeAllShips();
-            player2.placeAllShips();
-        }
+    public void startOfTheGame() {
+        System.out.println("WELCOME TO BATTLESHIP GAME");
+        System.out.println();
+        setDifficulty();
+        System.out.println();
+        System.out.println("Here is your initial board to place ships:");
+        Board board = new Board(10);
+        board.printBoard();
+        System.out.println();
+        player1.placeAllShips();
+        player2.placeAllShips();
+    }
 
-        private void turn(Player player, Player enemy) {
-            boolean hit;
-            do {
-                System.out.println((player == player1 ? "Player 1" : "Player 2") + "'s turn:");
+    private void turn(Player player, Player enemy) {
+        boolean hit;
+        do {
+            System.out.println((player == player1 ? "Player 1" : "Player 2") + "'s turn:");
 //              System.out.println(player.getClass().getSimpleName() + "'s turn:");
-                player.shoot(enemy.getBoard());
+            player.shoot(enemy.getBoard());
 
-                Location lastShot = player.getLastShot();
-                hit = enemy.getBoard().hasHit(lastShot) ;
-            } while (hit && !checkGameOver());
-        }
+            Location lastShot = player.getLastShot();
+            hit = enemy.getBoard().hasHit(lastShot);
+        } while (hit && !checkGameOver());
+    }
 
-        public void playGame() {
-            boolean gameOver = false;
-            Player currentPlayer = player1;
-            Player enemyPlayer = player2;
+    public void playGame() {
+        boolean gameOver = false;
+        Player currentPlayer = player1;
+        Player enemyPlayer = player2;
 
-            while (!gameOver) {
-                turn(currentPlayer, enemyPlayer);
+        while (!gameOver) {
+            turn(currentPlayer, enemyPlayer);
 
 
-                gameOver = checkGameOver();
+            gameOver = checkGameOver();
 
-                if (!gameOver) {
-                    if (currentPlayer == player1) {
-                        currentPlayer = player2;
-                        enemyPlayer = player1;
-                    } else {
-                        currentPlayer = player1;
-                        enemyPlayer = player2;
-                    }
+            if (!gameOver) {
+                if (currentPlayer == player1) {
+                    currentPlayer = player2;
+                    enemyPlayer = player1;
+                } else {
+                    currentPlayer = player1;
+                    enemyPlayer = player2;
                 }
             }
-            System.out.println("Game over!");
-            System.out.println((currentPlayer == player1 ? "Player 1" : "Player 2") + " wins!");
         }
+        System.out.println("Game over!");
+        System.out.println((currentPlayer == player1 ? "Player 1" : "Player 2") + " wins!");
+    }
 
-        private boolean checkGameOver() {
+    private boolean checkGameOver() {
 
         return player1.getBoard().areAllShipsSunk() || player2.getBoard().areAllShipsSunk();
     }
